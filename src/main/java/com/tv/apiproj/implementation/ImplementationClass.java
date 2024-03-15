@@ -5,6 +5,7 @@ import com.tv.apiproj.customs.CustomMethods;
 import com.tv.apiproj.dao.PersonDataDAO;
 import com.tv.apiproj.interfacePak.InterfaceClass;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -68,17 +69,22 @@ public class ImplementationClass implements InterfaceClass {
 
     @Override
     public ResponseEntity<String> generatePDF(int i, HttpServletResponse response) {
-        if(i==0){
-            return CustomMethods.generateAllPDF(response,personDataDAOList);
-        }else{
-            Optional<PersonDataDAO> personOptional = personDataDAOList.stream()
-                    .filter(person -> person.getId() == i)
-                    .findFirst();
-            if (personOptional.isPresent()) {
-                return CustomMethods.generatePerPersonPDF(response, List.of(personOptional.get()));
+        try {
+            if (i == 0) {
+                return CustomMethods.generateAllPDF(response, personDataDAOList);
             } else {
-                return ResponseEntity.notFound().build();
+                Optional<PersonDataDAO> personOptional = personDataDAOList.stream()
+                        .filter(person -> person.getId() == i)
+                        .findFirst();
+                if (personOptional.isPresent()) {
+                    return CustomMethods.generatePerPersonPDF(response, List.of(personOptional.get()));
+                } else {
+                    return ResponseEntity.notFound().build();
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
         }
     }
 }

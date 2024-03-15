@@ -14,23 +14,26 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.tv.apiproj.dao.PersonDataDAO;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
 
 public class CustomMethods {
 
-    public static ResponseEntity<String> generateAllPDF(HttpServletResponse response, List<PersonDataDAO> list) {
+    public static ResponseEntity<String> generateAllPDF(HttpServletResponse response, List<PersonDataDAO> list) throws URISyntaxException {
         addDataToPDF(response,list);
-        return null;
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     public static ResponseEntity<String> generatePerPersonPDF(HttpServletResponse response,List<PersonDataDAO> list) {
         addDataToPDF(response,list);
-        return null;
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     public static void addDataToPDF(HttpServletResponse response, List<PersonDataDAO> data){
