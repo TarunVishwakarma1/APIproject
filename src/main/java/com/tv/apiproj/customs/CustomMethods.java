@@ -19,13 +19,12 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
 
 public class CustomMethods {
 
-    public static ResponseEntity<String> generateAllPDF(HttpServletResponse response, List<PersonDataDAO> list) throws URISyntaxException {
+    public static ResponseEntity<String> generateAllPDF(HttpServletResponse response, List<PersonDataDAO> list) {
         addDataToPDF(response,list);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
