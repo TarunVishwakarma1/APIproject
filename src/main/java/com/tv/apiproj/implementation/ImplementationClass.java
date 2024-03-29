@@ -76,11 +76,7 @@ public class ImplementationClass implements InterfaceClass {
                 Optional<PersonDataDAO> personOptional = personDataDAOList.stream()
                         .filter(person -> person.getId() == i)
                         .findFirst();
-                if (personOptional.isPresent()) {
-                    return CustomMethods.generatePerPersonPDF(response, List.of(personOptional.get()));
-                } else {
-                    return ResponseEntity.notFound().build();
-                }
+                return personOptional.map(personDataDAO -> CustomMethods.generatePerPersonPDF(response, List.of(personDataDAO))).orElseGet(() -> ResponseEntity.notFound().build());
             }
         }catch (Exception e){
             e.printStackTrace();
